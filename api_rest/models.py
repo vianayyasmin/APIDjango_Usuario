@@ -1,16 +1,15 @@
 from django.db import models
 
-class Usuario(models.Model):
+class User(models.Model):
     
-    usuario_apelido = models.CharField(primary_key=True, max_length=100, default='')
-    usuario_nome = models.CharField(max_length=150, default='')
-    usuario_email = models.EmailField(default='')
-    usuario_idade = models.IntegerField(default=0)
-    
-    def __str__(self):
-        return f'Nome de Usuário: {self.usuario_apelido} | E-mail: {self.usuario_email}'
+    user_nickname = models.CharField(primary_key=True, max_length=100, default='')
+    user_name = models.CharField(max_length=150, default='')
+    user_email = models.EmailField(default='')
+    user_age = models.IntegerField(default=0)
 
-class UsuarioTask(models.Model):
-    usuario_apelido = models.CharField(max_length=100, default='')
-    usuario_task = models.CharField(max_length=255, default='')
+    def __str__(self):
+        return f'Nickname: {self.user_nickname} | E-mail: {self.user_email}'
     
+class UserTasks(models.Model):
+    user_nickname = models.CharField(max_length=100, default='')
+    user_task = models.CharField(max_length=255, default='')
