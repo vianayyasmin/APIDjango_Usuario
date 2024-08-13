@@ -10,20 +10,22 @@ from .serializers import UserSerializer
 
 import json
 
+from . import functions as fn
+
 @api_view(['GET'])
 def get_users(request):
     
     if request.method == 'GET':
         
-        users = User.objects.all()
+        users = User.objects.all() #Pega todos os objetos no banco de dados User (retorna um queryset)
         
-        serializer = UserSerializer(users, many=True)
+        serializer = UserSerializer(users, many=True) #Serializa os dados dos objeto em json (tem um parametro 'many' pq é um queryset)
         
-        return Response(serializer.data)
+        return Response(serializer.data) #Retorna o dado serializado
     
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def get_by_nick(request, nick):
     
     try:
@@ -105,8 +107,26 @@ def user_manager(request):
         
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    
+        print('Resultado final ', fn.soma(1,2))
 
+        serializer = UserSerializer(updated_user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    #Deletar os dados (DELETE)
+    
+    if request.method == 'DELETE':
+
+        try:
+            user_to_delete = User.objects.get(pk=request.data['user_nickname'])
+            user_to_delete.delete()
+            return Response(status=status.HTTP_202_ACCEPTED)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
