@@ -97,7 +97,9 @@ def user_manager(request):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND) #Se você mudar o nome de usuário 
         
-        print(request.data)
+        print(request.data) 
+        
+        
         
         serializer = UserSerializer(updated_user, data=request.data)
         
